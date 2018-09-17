@@ -1,0 +1,9 @@
+
+.nf-hidden {
+  display: none;
+}
+.nf-show {
+  display: block;
+}
+
+.pane-app-container {}

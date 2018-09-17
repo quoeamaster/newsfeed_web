@@ -1,0 +1,11 @@
+{
+  "firebase": {
+    "apiKey": "AIzaSyBXAV0Ngdjbva7OjydWHY0Z0_nlFm1WRXc",
+    "authDomain": "newsfeedweb-3809a.firebaseapp.com",
+    "databaseURL": "https://newsfeedweb-3809a.firebaseio.com",
+    "projectId": "newsfeedweb-3809a",
+    "storageBucket": "newsfeedweb-3809a.appspot.com",
+    "messagingSenderId": "751017167848"
+  }
+}
+
