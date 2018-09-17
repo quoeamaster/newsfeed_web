@@ -14,7 +14,7 @@ import './assets/newsfeed-common.css'
 
 // ** add back this app.config.json file based on the
 // apiKey values from your firebase project **
-import configFile from './assets/app.config.json'
+import configFile from './assets/app.configs.json'
 
 // set the middleware(s)
 // Vue.use(BootstrapVue)
