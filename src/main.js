@@ -5,6 +5,8 @@ import firebase from 'firebase'
 // service
 import TypeService from './service/TypeService'
 import FirebaseServiceFx from './service/FirebaseService'
+import NewsServiceFx from './service/NewsService'
+import Axios from 'axios'
 
 // import static resource(s)
 import 'mdbootstrap/css/bootstrap.min.css'
@@ -23,6 +25,9 @@ import configFile from './assets/app.configs.json'
 window.TypeService = TypeService
 window.FirebaseService = FirebaseServiceFx(configFile, firebase)
 window.FirebaseService.init()
+window.NewsService = NewsServiceFx(configFile)
+window.NewsService.init()
+window.Axios = Axios
 
 Vue.config.productionTip = false
 new Vue({

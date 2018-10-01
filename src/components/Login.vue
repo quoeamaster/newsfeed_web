@@ -10,9 +10,16 @@
 .text-login {
   margin-bottom: 12px;
 }
+
+.pane-landing-container {
+  margin: 20px 4px 24px 4px;
+}
+
 </style>
 
 <script>
+import CarouselComponent from './Carousel.vue'
+
 export default {
   name: 'login-vue',
   data: function () {
@@ -20,7 +27,11 @@ export default {
       username: 'abc@abc.com',
       password: 'password',
 
-      showLoginContainer: true
+      showLoginContainer: true,
+
+      carouselTopHeadlines: null,
+
+      commonError: null
     }
   },
   methods: {
@@ -115,6 +126,27 @@ export default {
       }, function (err) {
         alert('something is wrong => ' + err.message)
       })
+    },
+
+    // carousel related methods
+    carouselGetTopHeadlinesSuccess: function (data) {
+      this.carouselTopHeadlines = data
+    },
+    carouselGetTopHeadLinesFailure: function (err) {
+      this.commonError = err
+    }
+  },
+  components: {
+    CarouselComponent
+  },
+  watch: {
+    showLoginContainer: function (newValue, oldValue) {
+      // template string ... console.log(`oldValue: ${oldValue} vs newValue: ${newValue}`)
+      if (newValue === false && oldValue === true) {
+        window.NewsService.getTopHeadlinesForCarousel('us',
+          this.carouselGetTopHeadlinesSuccess,
+          this.carouselGetTopHeadLinesFailure)
+      } // end -- if - should start looking for top news
     }
   }
 }
@@ -165,6 +197,10 @@ export default {
           <!-- Links -->
         </div>
       </nav>
+      <!-- content -->
+      <div class="pane-landing-container">
+        <CarouselComponent config-id="landingCarouselMain" v-bind:carouselData="carouselTopHeadlines"></CarouselComponent>
+      </div>
     </div>
   </div>
 </template>

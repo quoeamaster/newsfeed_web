@@ -6,4 +6,8 @@
   display: block;
 }
 
+.nf-pointer-mouse {
+  cursor: pointer;
+}
+
 .pane-app-container {}
