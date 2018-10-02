@@ -10,4 +10,15 @@
   cursor: pointer;
 }
 
+.nf-plain-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.nf-list-item-horizontal {
+  float: left;
+  display: inline;
+  padding-right: 8px;
+}
+
 .pane-app-container {}

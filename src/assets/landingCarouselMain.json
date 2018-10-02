@@ -1,5 +1,9 @@
 {
   "type": "horizontal_focus_slide",
   "slideInterval": "2s",
-  "slideSize": 3
+  "slideSize": 2,
+  "card_dimension": {
+    "width": "300px",
+    "height": "280px"
+  }
 }

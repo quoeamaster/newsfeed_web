@@ -5,8 +5,13 @@
   background-image: linear-gradient(white, #efefef);
 }
 .pane-carousel-feed-container {
+  /*
   margin-left: 40px;
   margin-right: 40px;
+  */
+  max-width: 800px;
+  margin: auto;
+  height: 300px;
 }
 
 .btn-directions-carousel {
@@ -29,8 +34,13 @@
 </style>
 
 <script>
+import NewsCardComponent from './NewsCard'
+
 export default {
   name: 'comp_carousel',
+  components: {
+    NewsCardComponent
+  },
   data: function () {
     return {
       test: 'testing property',
@@ -85,7 +95,7 @@ export default {
 
       this.carousel.displayItems = []
       if ((this.carousel.current + this.config.slideSize) < items.length) {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < this.config.slideSize; i++) {
           this.carousel.displayItems.push(items[this.carousel.current + i])
         }
       } else {
@@ -118,6 +128,20 @@ export default {
       // console.log(`total arcticles : ${this.carouselData.data.articles.length}, current index => ${this.carousel.current}`)
       // update the display items
       this.getDisplayNewsItems()
+    },
+
+    /* ---------------------------- */
+    /* ---------------------------- */
+    /*        event handler(s)      */
+    /* ---------------------------- */
+    /* ---------------------------- */
+
+    /**
+     *  event handler for the carousel item click event
+     */
+    OnCarouselMainClick: function (params) {
+      console.log(params)
+      alert('clicked, to be handled')
     }
   },
   watch: {
@@ -146,11 +170,20 @@ export default {
       <i @click="swipeCarousel(0)" class="fa fa-caret-left btn-direction-carousel btn-directions-carousel nf-pointer-mouse btn-directions-left" style="font-size: 60px;" aria-hidden="true"></i>
       <i @click="swipeCarousel(1)" class="fa fa-caret-right btn-direction-carousel btn-directions-carousel nf-pointer-mouse btn-directions-right" style="font-size: 60px;" aria-hidden="true"></i>
       <div style="margin-left: 48px; margin-right: 48px;">
-        {{carousel.displayItems}}
         <!-- add a component for the card slide(s) -->
+        <ul>
+          <li v-for="(newsItem, index) in carousel.displayItems" v-bind:key="newsItem.url"
+              class="nf-plain-list nf-list-item-horizontal">
+            <NewsCardComponent
+              v-on:carouselMainClick="OnCarouselMainClick"
+              v-bind:index="index"
+              v-bind:config="config"
+              v-bind:newsItem="newsItem"></NewsCardComponent>
+          </li>
+        </ul>
       </div>
-
     </div>
-
+    <!-- the list of newsItem that might be interested by historical choices -->
+    <div style="margin-top: 20px;">historical choices</div>
   </div>
 </template>
