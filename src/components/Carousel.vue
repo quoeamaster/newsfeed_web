@@ -183,7 +183,5 @@ export default {
         </ul>
       </div>
     </div>
-    <!-- the list of newsItem that might be interested by historical choices -->
-    <div style="margin-top: 20px;">historical choices</div>
   </div>
 </template>

@@ -10,16 +10,13 @@
 .text-login {
   margin-bottom: 12px;
 }
-
-.pane-landing-container {
-  margin: 20px 4px 24px 4px;
+.white-placeholder::placeholder {
+  color: white;
+  opacity: 0.8;
 }
-
 </style>
 
 <script>
-import CarouselComponent from './Carousel.vue'
-
 export default {
   name: 'login-vue',
   data: function () {
@@ -27,11 +24,9 @@ export default {
       username: 'abc@abc.com',
       password: 'password',
 
-      showLoginContainer: true,
-
-      carouselTopHeadlines: null,
-
-      commonError: null
+      showLoginContainer: true
+      // carouselTopHeadlines: null,
+      // commonError: null
     }
   },
   methods: {
@@ -126,27 +121,6 @@ export default {
       }, function (err) {
         alert('something is wrong => ' + err.message)
       })
-    },
-
-    // carousel related methods
-    carouselGetTopHeadlinesSuccess: function (data) {
-      this.carouselTopHeadlines = data
-    },
-    carouselGetTopHeadLinesFailure: function (err) {
-      this.commonError = err
-    }
-  },
-  components: {
-    CarouselComponent
-  },
-  watch: {
-    showLoginContainer: function (newValue, oldValue) {
-      // template string ... console.log(`oldValue: ${oldValue} vs newValue: ${newValue}`)
-      if (newValue === false && oldValue === true) {
-        window.NewsService.getTopHeadlinesForCarousel('us',
-          this.carouselGetTopHeadlinesSuccess,
-          this.carouselGetTopHeadLinesFailure)
-      } // end -- if - should start looking for top news
     }
   }
 }
@@ -166,7 +140,13 @@ export default {
     <div class="pane-app-container" v-bind:class="cssGetAppContainerDisplay()">
       <nav class="navbar navbar-expand-lg navbar-dark primary-color">
         <!-- Navbar brand -->
-        <a class="navbar-brand" href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i></a>
+        <div>
+          <a class="navbar-brand" href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i></a>
+          <!-- TODO animation plus hide and show feature on icon toggled -->
+          <span class="md-form">
+            <input type="text" class="form-control-sm white-text white-placeholder" placeholder="search..." />
+          </span>
+        </div>
 
         <!-- Collapse button -->
         <button class="navbar-toggler" type="button" @click="cssGetNavbarItemsDisplay()">
@@ -197,10 +177,7 @@ export default {
           <!-- Links -->
         </div>
       </nav>
-      <!-- content -->
-      <div class="pane-landing-container">
-        <CarouselComponent config-id="landingCarouselMain" v-bind:carouselData="carouselTopHeadlines"></CarouselComponent>
-      </div>
+      <router-view />
     </div>
   </div>
 </template>

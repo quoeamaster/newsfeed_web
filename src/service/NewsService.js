@@ -14,8 +14,8 @@ let NewsService = function (configFile) {
       _apiKey = configFile.newsApi.apiKey
       _httpHeaders.headers['X-Api-Key'] = _apiKey
     },
-    getTopHeadlinesForCarousel: function (country, successCallback, failureCallaback) {
-      let url = `https://newsapi.org/v2/top-headlines?country=${country}`
+    getTopHeadlinesForCarousel: function (country, pageSize, successCallback, failureCallaback) {
+      let url = `https://newsapi.org/v2/top-headlines?country=${country}&pageSize=${pageSize}`
       /*
        *  calling axios to handle http get request.
        *  based on the suggestion from news-api website, the apiKey is embedded within the http header
