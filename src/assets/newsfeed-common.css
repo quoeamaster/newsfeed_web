@@ -21,4 +21,21 @@
   padding-right: 8px;
 }
 
+.nf-font-11 {
+  font-size: 11px;
+}
+.nf-font-14 {
+  font-size: 14px;
+}
+
+.nf-separator {
+  text-align: center;
+  font-size: 20px;
+  vertical-align: middle;
+  margin-bottom: 8px;
+}
+.nf-separator-item-spacer {
+  margin-left: 4px;
+  margin-right: 4px;
+}
 .pane-app-container {}

@@ -140,8 +140,10 @@ export default {
      *  event handler for the carousel item click event
      */
     OnCarouselMainClick: function (params) {
-      console.log(params)
-      alert('clicked, to be handled')
+      // console.log(params)
+      this.$store.commit('setPickedNewsItem', params.newsItem)
+      // router forward to the details page
+      this.$router.push({ name: 'NewsFeedItemDetailPage' })
     }
   },
   watch: {

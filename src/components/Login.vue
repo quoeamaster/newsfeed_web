@@ -24,9 +24,12 @@ export default {
       username: 'abc@abc.com',
       password: 'password',
 
-      showLoginContainer: true
-      // carouselTopHeadlines: null,
-      // commonError: null
+      showLoginContainer: true,
+
+      showSearchbar: false,
+      searchbarText: '',
+
+      commonError: []
     }
   },
   methods: {
@@ -118,10 +121,72 @@ export default {
         // force to un-toggle navbar again
         instance.cssGetNavbarItemsDisplay()
         instance.showLoginContainer = true
+        // reset router
+        instance.$router.push({ name: 'NewsFeedLandingPage' })
       }, function (err) {
         alert('something is wrong => ' + err.message)
       })
+    },
+
+    /**
+     *  toggle the "showSearchbar" property
+     */
+    toggleSearchbar: function () {
+      this.showSearchbar = !this.showSearchbar
+    },
+    cssGetSearchbarVisibility: function () {
+      let css = {}
+      if (this.showSearchbar === true) {
+        // css['nf-show'] = true
+        css['nf-hidden'] = false
+      } else {
+        // css['nf-show'] = false
+        css['nf-hidden'] = true
+      }
+      return css
+    },
+
+    searchForNewsByKeywords: function () {
+      // reset the error
+      this._resetCommonError()
+      // validate the keyword (non empty)
+      if (window.TypeService.isEmptyString(this.searchbarText) === true) {
+        this.commonError.push('The searchbar keywords are empty! please provide some keywords and try again.')
+        return
+      }
+      // search for the news-api based on the given keywords
+      window.NewsService.getEverythingNewsByKeywords(this.searchbarText,
+        5,
+        1,
+        'publishedAt',
+        'en',
+        this.searchForNewsByKeywordsSuccess,
+        this.searchForNewsByKeywordsFailure)
+    },
+    _resetCommonError: function () {
+      this.commonError = []
+    },
+    searchForNewsByKeywordsSuccess: function (response) {
+      if (response.status === 200) {
+        console.log('ok~')
+        console.log(response)
+        // TODO: rest store variables
+        // reset router to landing page
+        this.$router.push({ name: 'NewsFeedLandingPage' })
+        // update the searchbarNews property in the store
+        this.$store.commit('setSearchbarNewsItems', response.data.articles)
+        // console.log(this.$store.state.searchbar.newsItems)
+      } else {
+        this._resetCommonError()
+        this.commonError.push(`Something is wrong with the news-api side. status[${response.status}] - statusText[${response.statusText}]`)
+      }
+    },
+    searchForNewsByKeywordsFailure: function (err) {
+      console.log('Error~')
+      this._resetCommonError()
+      this.commonError.push(err.toString())
     }
+
   }
 }
 </script>
@@ -141,10 +206,13 @@ export default {
       <nav class="navbar navbar-expand-lg navbar-dark primary-color">
         <!-- Navbar brand -->
         <div>
-          <a class="navbar-brand" href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i></a>
-          <!-- TODO animation plus hide and show feature on icon toggled -->
-          <span class="md-form">
-            <input type="text" class="form-control-sm white-text white-placeholder" placeholder="search..." />
+          <a class="navbar-brand" href="#"><i class="fa fa-newspaper-o" aria-hidden="true" @click="toggleSearchbar()"></i></a>
+          <span class="md-form" v-bind:class="cssGetSearchbarVisibility()">
+            <input type="text"
+                   class="form-control-sm white-text white-placeholder"
+                   placeholder="search..."
+                   v-model="searchbarText"
+                   @keyup.enter="searchForNewsByKeywords()" />
           </span>
         </div>
 
