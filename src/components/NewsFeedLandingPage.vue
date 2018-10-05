@@ -7,6 +7,7 @@
 <script>
 import CarouselComponent from './Carousel.vue'
 import SearchbarListingComponent from './SearhbarListing'
+import HistoricalListingComponent from './HistoricalSearchListing'
 
 export default {
   name: 'comp_newsfeedlandingpage',
@@ -19,7 +20,8 @@ export default {
   },
   components: {
     CarouselComponent,
-    SearchbarListingComponent
+    SearchbarListingComponent,
+    HistoricalListingComponent
   },
   methods: {
     // carousel related methods
@@ -50,6 +52,6 @@ export default {
     <!-- searchbar results listing -->
     <SearchbarListingComponent></SearchbarListingComponent>
     <!-- the list of newsItem that might be interested by historical choices /searches -->
-    <div style="margin-top: 20px;">historical choices</div>
+    <HistoricalListingComponent></HistoricalListingComponent>
   </div>
 </template>

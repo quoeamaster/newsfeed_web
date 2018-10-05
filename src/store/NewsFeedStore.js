@@ -5,6 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    auth: {
+      // salt.user.uid => the actual uid for that user (instead of the email)
+      salt: null
+    },
     general: {
       showLoginContainer: true,
       /**
@@ -15,6 +19,9 @@ export default new Vuex.Store({
     },
     searchbar: {
       newsItems: null
+    },
+    prefs: {
+      record: null
     }
   },
   mutations: {
@@ -26,6 +33,26 @@ export default new Vuex.Store({
     },
     setPickedNewsItem (state, item) {
       state.general.pickedNewsItem = item
+    },
+    setAuthSalt (state, salt) {
+      state.auth.salt = salt
+    },
+    setPrefsRecord (state, pref) {
+      state.prefs.record = pref
+    }
+  },
+  getters: {
+    /**
+     * return the uid under the valid authentication object
+     * @param state
+     * @returns {*}
+     */
+    uid: state => {
+      if (state.auth.salt) {
+        return state.auth.salt.user.uid
+      } else {
+        return null
+      }
     }
   }
 })

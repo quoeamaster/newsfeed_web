@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 import NewsFeedLandingPage from './../components/NewsFeedLandingPage'
 import NewsFeedItemDetailPage from './../components/NewsFeedItemDetailPage'
-// import Testing from './../components/testing'
 
 Vue.use(Router)
 

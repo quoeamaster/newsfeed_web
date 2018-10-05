@@ -53,12 +53,16 @@ export default {
       return ok
     },
     signUpNewUser: function () {
+      let instance = this
       if (this.validateForm()) {
         let auth = window.FirebaseService.getFirebase().auth()
 
         auth.createUserWithEmailAndPassword(this.username, this.password).then(function (data) {
           // ** user.uid => the uid for the user created
           alert('account created successfully~')
+          // update the auth salt
+          instance.$store.commit('setAuthSalt', data)
+          window.FirebaseService.getFirestorePreferencesByUID(instance.$store.getters.uid, instance.$store)
         }, function (err) {
           alert('something is wrong => ' + err.message)
         })
@@ -71,6 +75,9 @@ export default {
 
         auth.signInWithEmailAndPassword(this.username, this.password).then(function (data) {
           alert('login successfully')
+          // update the salt
+          instance.$store.commit('setAuthSalt', data)
+          window.FirebaseService.getFirestorePreferencesByUID(instance.$store.getters.uid, instance.$store)
           instance.showLoginContainer = false
         }, function (err) {
           alert('something is wrong =>' + err.message)
@@ -121,6 +128,12 @@ export default {
         // force to un-toggle navbar again
         instance.cssGetNavbarItemsDisplay()
         instance.showLoginContainer = true
+        // rest store variables
+        instance.$store.commit('setSearchbarNewsItems', null)
+        instance.$store.commit('setAuthSalt', null)
+        instance.$store.commit('setPrefsRecord', null)
+        instance.searchbarText = ''
+        instance.showSearchbar = false
         // reset router
         instance.$router.push({ name: 'NewsFeedLandingPage' })
       }, function (err) {
@@ -170,12 +183,12 @@ export default {
       if (response.status === 200) {
         console.log('ok~')
         console.log(response)
-        // TODO: rest store variables
         // reset router to landing page
         this.$router.push({ name: 'NewsFeedLandingPage' })
         // update the searchbarNews property in the store
         this.$store.commit('setSearchbarNewsItems', response.data.articles)
-        // console.log(this.$store.state.searchbar.newsItems)
+        // console.log(this.$store.state.auth.salt)
+        window.FirebaseService.updateFirestorePreferencesByUID(this.$store.getters.uid, this.searchbarText, this.$store)
       } else {
         this._resetCommonError()
         this.commonError.push(`Something is wrong with the news-api side. status[${response.status}] - statusText[${response.statusText}]`)
